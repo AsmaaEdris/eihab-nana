@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Wedding Dashboard | Ehab & Nana ✨
+    </title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        :root {
+
+            --gold: #c5a880;
+
+            --dark: #2c261f;
+
+            --cream: #faf7f2;
+
+        }
+
+        body {
+
+            background: var(--cream);
+
+            color: var(--dark);
+
+            font-family: 'Inter', sans-serif;
+
+            margin: 0;
+
+            padding: 20px;
+
+        }
+
+        .container {
+
+            max-width: 1000px;
+
+            margin: 0 auto;
+
+        }
+
+        header {
+
+            text-align: center;
+
+            margin: 40px 0;
+
+        }
+
+        h1 {
+
+            font-family:
+                'Playfair Display',
+                serif;
+
+            color: var(--gold);
+
+            font-size: 2.8rem;
+
+            margin-bottom: 10px;
+
+        }
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 40px;
+
+        }
+
+        .stat-card {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 20px;
+
+            text-align: center;
+
+            border: 1px solid #eee;
+
+        }
+
+        .number {
+
+            font-size: 1.8rem;
+
+            font-weight: 700;
+
+            color: var(--gold);
+
+            display: block;
+
+        }
+
+        .table-container {
+
+            width: 100%;
+
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+        }
+
+        th {
+
+            color: #888;
+
+            text-transform: uppercase;
+
+            font-size: 0.75rem;
+
+            padding: 15px;
+
+            text-align: left;
+
+        }
+
+        tr {
+
+            background: white;
+
+            border-radius: 15px;
+
+            margin-bottom: 10px;
+
+            display: table-row;
+
+            transition: .3s;
+
+        }
+
+        td {
+
+            padding: 20px;
+
+            border-bottom:
+                10px solid var(--cream);
+
+        }
+
+        @media (max-width: 768px) {
+
+            .stats-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+
+                display: block;
+
+            }
+
+            thead {
+
+                display: none;
+
+            }
+
+            tr {
+
+                padding: 15px;
+
+                margin-bottom: 15px;
+
+                border-radius: 15px;
+
+                background: white;
+
+            }
+
+            td {
+
+                display: flex;
+
+                justify-content:
+                    space-between;
+
+                border: none;
+
+                padding: 8px 0;
+
+                gap: 15px;
+
+            }
+
+            td::before {
+
+                content:
+                    attr(data-label);
+
+                font-weight: bold;
+
+                color: var(--gold);
+
+            }
+
+        }
+
+        .badge {
+
+            padding: 5px 12px;
+
+            border-radius: 20px;
+
+            font-size: 0.8rem;
+
+            font-weight: 600;
+
+        }
+
+        .success {
+
+            background: #dcfce7;
+
+            color: #166534;
+
+        }
+
+        .danger {
+
+            background: #fee2e2;
+
+            color: #b91c1c;
+
+        }
+
+        .btn-del {
+
+            cursor: pointer;
+
+            color: #bc0909;
+
+            border: none;
+
+            background: none;
+
+            font-size: 1.2rem;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+
+        <h1>
+            Ehab & Nana
+        </h1>
+
+        <p>
+            Wedding Attendance Overview
+        </p>
+
+    </header>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <h3>Total</h3>
+
+            <span
+                class="number"
+                id="t-total"
+            >
+                0
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>Attending</h3>
+
+            <span
+                class="number"
+                id="t-attending"
+            >
+                0
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>Declined</h3>
+
+            <span
+                class="number"
+                id="t-declined"
+            >
+                0
+            </span>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h3>Notes</h3>
+
+            <span
+                class="number"
+                id="t-notes"
+            >
+                0
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>Guest Name</th>
+
+                <th>Status</th>
+
+                <th>Count</th>
+
+                <th>Message</th>
+
+                <th>Action</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="tableBody"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+async function init() {
+
+    const res =
+        await fetch('/api/guests');
+
+    const data =
+        await res.json();
+
+    const tbody =
+        document.getElementById(
+            'tableBody'
+        );
+
+    let total = 0;
+
+    let attending = 0;
+
+    let declined = 0;
+
+    let notes = 0;
+
+    tbody.innerHTML = '';
+
+    data.forEach((g) => {
+
+        const isAttending =
+
+            g.status === 'حضور' ||
+
+            g.status === 'Attending' ||
+
+            g.status === true ||
+
+            g.status === 'true';
+
+        const count = isAttending
+
+            ? Math.max(
+                1,
+                parseInt(g.guestsCount) || 1
+              )
+
+            : 0;
+
+        if (isAttending) {
+
+            attending++;
+
+            total += count;
+
+        } else {
+
+            declined++;
+
+        }
+
+        if (
+
+            g.message &&
+
+            g.message.trim() !== ''
+
+        ) {
+
+            notes++;
+
+        }
+
+        tbody.innerHTML += `
+
+            <tr>
+
+                <td data-label=" Name">
+
+                    <strong>
+
+                        ${escapeHtml(g.name)}
+
+                    </strong>
+
+                </td>
+
+                <td data-label="Status">
+
+                    <span class="badge ${
+                        isAttending
+                            ? 'success'
+                            : 'danger'
+                    }">
+
+                        ${
+                            isAttending
+                                ? 'Attending'
+                                : 'Declined'
+                        }
+
+                    </span>
+
+                </td>
+
+                <td data-label="Count">
+
+                    ${
+                        isAttending
+                            ? count
+                            : '-'
+                    }
+
+                </td>
+
+                <td data-label="Message">
+
+                    ${
+                        escapeHtml(
+                            g.message || '-'
+                        )
+                    }
+
+                </td>
+
+                <td data-label="Action">
+
+                    <button
+                        class="btn-del"
+                        onclick="del(${g.id}, this)"
+                    >
+                        ✕
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+    });
+
+    document
+        .getElementById('t-total')
+        .textContent = total;
+
+    document
+        .getElementById('t-attending')
+        .textContent = attending;
+
+    document
+        .getElementById('t-declined')
+        .textContent = declined;
+
+    document
+        .getElementById('t-notes')
+        .textContent = notes;
+}
+
+async function del(id, buttonElement) {
+
+    const row =
+        buttonElement.closest('tr');
+
+    row.style.opacity = '.3';
+
+    try {
+
+        const res =
+            await fetch(
+                `/api/delete?id=${id}`,
+                {
+                    method: 'DELETE'
+                }
+            );
+
+        const data =
+            await res.json();
+
+        if (data.success) {
+
+            row.style.transform =
+                'scale(.95)';
+
+            row.style.opacity =
+                '0';
+
+            setTimeout(() => {
+
+                row.remove();
+
+                updateStats();
+
+            }, 300);
+
+        } else {
+
+            row.style.opacity = '1';
+
+            alert('Delete failed');
+
+        }
+
+    } catch (err) {
+
+        console.error(err);
+
+        row.style.opacity = '1';
+
+    }
+}
+
+function updateStats() {
+
+    const rows =
+        document.querySelectorAll(
+            '#tableBody tr'
+        );
+
+    let total = 0;
+
+    let attending = 0;
+
+    let declined = 0;
+
+    let notes = 0;
+
+    rows.forEach(row => {
+
+        const status =
+            row.querySelector('.badge')
+            .textContent
+            .trim();
+
+        const count =
+            parseInt(
+                row.children[2]
+                .textContent
+            ) || 0;
+
+        const message =
+            row.children[3]
+            .textContent
+            .trim();
+
+        if (
+
+            status === 'حضور'
+
+        ) {
+
+            attending++;
+
+            total += count;
+
+        } else {
+
+            declined++;
+
+        }
+
+        if (
+            message &&
+            message !== '-'
+        ) {
+
+            notes++;
+
+        }
+
+    });
+
+    document
+        .getElementById('t-total')
+        .textContent = total;
+
+    document
+        .getElementById('t-attending')
+        .textContent = attending;
+
+    document
+        .getElementById('t-declined')
+        .textContent = declined;
+
+    document
+        .getElementById('t-notes')
+        .textContent = notes;
+}
+
+function escapeHtml(str) {
+
+    if (!str) return '';
+
+    return str
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+}
+
+init();
+
+</script>
+
+</body>
+</html>
