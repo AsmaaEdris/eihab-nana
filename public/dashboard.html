@@ -114,19 +114,28 @@
 
         }
 
-        .table-container {
+     .table-container {
+    width: 100%;
+    overflow-x: auto;
+}
 
-            width: 100%;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
 
-        }
+td,
+th {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
 
-        table {
-
-            width: 100%;
-
-            border-collapse: collapse;
-
-        }
+td[data-label="Message"] {
+    max-width: 280px;
+    white-space: pre-wrap;
+}
 
         th {
 
