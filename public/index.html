@@ -633,16 +633,17 @@ sendBtn.innerHTML = 'Sending <span class="loader"></span>';        sendBtn.disab
                 body: JSON.stringify({ name, message, status: attendingChoice ? 'Attending' : 'Declined', guestsCount: attendingChoice ? guestsCount : 0 })
             });
             const data = await response.json();
-            if (data.success) {
-const form = document.getElementById('combinedForm');
+         if (data.success) {
+    const form = document.getElementById('combinedForm');
+    const successDiv = document.getElementById('formSuccess'); // إضافة هذا السطر
 
-form.style.transition = '.4s';
-form.style.opacity = '0';
-form.style.transform = 'translateY(10px)';
-
-setTimeout(()=>{
-    form.style.display = 'none';
-},400);               document.getElementById('successMsg').textContent =
+    form.style.transition = '.4s';
+    form.style.opacity = '0';
+    
+    setTimeout(() => {
+        form.style.display = 'none';
+        successDiv.style.display = 'block'; // هذا السطر هو الذي سيُظهر الرسالة
+    }, 400);        document.getElementById('successMsg').textContent =
 `Your attendance for ${guestsCount} guest(s) has been successfully recorded. Mostafa & Doaa are excited to celebrate with you! ✨`;
                 if (attendingChoice) {
                     document.getElementById('successEmoji').textContent = '🎉';
