@@ -165,15 +165,31 @@ td[data-label="Message"] {
 
         }
 
-        td {
+      td {
 
-            padding: 20px;
+    display: flex;
 
-            border-bottom:
-                10px solid var(--cream);
+    justify-content: space-between;
 
-        }
+    align-items: center;
 
+    flex-wrap: nowrap;
+
+    border: none;
+
+    padding: 8px 0;
+
+    gap: 15px;
+          
+
+}
+      td::before {
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
+
+}
         @media (max-width: 768px) {
 
             .stats-grid {
