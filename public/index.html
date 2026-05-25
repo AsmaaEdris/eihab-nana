@@ -535,7 +535,7 @@ section {
         </a>
     </div>
 </section>
-       <section class="s-message">
+    <section class="s-message">
     <div style="position:absolute;top:10px;left:10px;font-size:2.5rem;opacity:.2;transform:rotate(-15deg)">🌹</div>
     <div style="position:absolute;bottom:20px;right:10px;font-size:2rem;opacity:.2;transform:rotate(10deg)">🌸</div>
 
@@ -550,10 +550,10 @@ section {
         <label class="field-label">Will you attend with us?</label>
         <div class="rsvp-toggle" id="rsvpToggle">
             <button type="button" class="rsvp-opt" id="btnYes" onclick="selectAttending(true)">
-                ✅ Yes, I will attend
+                 Yes, I will attend
             </button>
             <button type="button" class="rsvp-opt" id="btnNo" onclick="selectAttending(false)">
-                😔 Sorry, I can't make it
+                 Sorry, I can't make it
             </button>
         </div>
 
@@ -621,7 +621,6 @@ tbody tr:hover{
     async function submitCombined(e) {
         e.preventDefault();
         const name = document.getElementById('guestName').value.trim();
-const phone = '';
         const message = document.getElementById('guestMsg').value.trim();
         const guestsCount = parseInt(document.getElementById('guestsCount').value) || 1;
         if (!name || attendingChoice === null) return;
@@ -631,7 +630,7 @@ sendBtn.innerHTML = 'Sending <span class="loader"></span>';        sendBtn.disab
             const response = await fetch('/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, phone, message, status: attendingChoice ? 'Attending' : 'Declined', guestsCount: attendingChoice ? guestsCount : 0 })
+                body: JSON.stringify({ name, message, status: attendingChoice ? 'Attending' : 'Declined', guestsCount: attendingChoice ? guestsCount : 0 })
             });
             const data = await response.json();
             if (data.success) {
