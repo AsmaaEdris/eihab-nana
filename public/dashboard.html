@@ -164,33 +164,42 @@ td[data-label="Message"] {
             transition: .3s;
 
         }
-
-      td {
+td {
 
     display: flex;
 
     justify-content: space-between;
 
-    align-items: center;
-
-    flex-wrap: nowrap;
+    align-items: flex-start;
 
     border: none;
 
     padding: 8px 0;
 
     gap: 15px;
-          
 
 }
-      td::before {
+   td::before {
+
+    content: attr(data-label);
+
+    font-weight: bold;
+
+    color: var(--gold);
 
     white-space: nowrap;
 
+    min-width: 80px;
+
     flex-shrink: 0;
 
+}  
+      td[data-label="Message"] {
+
+    word-break: break-word;
+
 }
-        @media (max-width: 768px) {
+      @media (max-width: 768px) {
 
             .stats-grid {
 
